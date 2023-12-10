@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://bt4p1uon6q2jm"]
+
+[ext_resource type="Script" path="res://addons/custom_cam_preview/preview_button.gd" id="1_o8uty"]
+
+[node name="ToolButton" type="MenuButton"]
+offset_right = 134.0
+offset_bottom = 31.0
+text = "Camera Preview"
+switch_on_hover = true
+item_count = 6
+popup/item_0/text = "Visible"
+popup/item_0/checkable = 1
+popup/item_0/id = 0
+popup/item_1/text = "Aspect Ratio"
+popup/item_1/id = -1
+popup/item_1/separator = true
+popup/item_2/text = "Unconstrained"
+popup/item_2/checkable = 2
+popup/item_2/checked = true
+popup/item_2/id = 2
+popup/item_3/text = "4:3"
+popup/item_3/checkable = 2
+popup/item_3/id = 3
+popup/item_4/text = "16:9"
+popup/item_4/checkable = 2
+popup/item_4/id = 4
+popup/item_5/text = "16:10"
+popup/item_5/checkable = 2
+popup/item_5/id = 5
+script = ExtResource("1_o8uty")
