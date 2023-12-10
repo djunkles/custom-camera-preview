@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bt4p1uon6q2jm"]
 
-[ext_resource type="Script" path="res://addons/custom_cam_preview/preview_button.gd" id="1_o8uty"]
+[ext_resource type="Script" path="res://addons/custom-camera-preview/preview_button.gd" id="1_o8uty"]
 
 [node name="ToolButton" type="MenuButton"]
 offset_right = 134.0

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://hpe1hrqenuin"]
 
-[ext_resource type="Script" path="res://addons/custom_cam_preview/cam_preview.gd" id="1_4lwie"]
-[ext_resource type="Script" path="res://addons/custom_cam_preview/window.gd" id="2_5j3h0"]
+[ext_resource type="Script" path="res://addons/custom-camera-preview/cam_preview.gd" id="1_ufts1"]
+[ext_resource type="Script" path="res://addons/custom-camera-preview/window.gd" id="2_u3a4r"]
 
 [node name="cam_preview" type="Control"]
 layout_mode = 3
@@ -11,7 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-script = ExtResource("1_4lwie")
+script = ExtResource("1_ufts1")
 
 [node name="Window" type="Panel" parent="."]
 self_modulate = Color(1, 1, 1, 0.701961)
@@ -27,7 +27,7 @@ offset_top = -230.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_default_cursor_shape = 6
-script = ExtResource("2_5j3h0")
+script = ExtResource("2_u3a4r")
 
 [node name="Label" type="Label" parent="Window"]
 layout_mode = 1
