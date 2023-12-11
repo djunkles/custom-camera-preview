@@ -12,6 +12,7 @@ var pcam: Camera3D
 
 var rt: RemoteTransform3D
 var editor_selection = EditorInterface.get_selection()
+var editor_camera = EditorInterface.get_editor_viewport_3d(0).get_camera_3d()
 
 func _enter_tree():
 	main_screen_changed.connect(on_main_screen_changed)
@@ -24,13 +25,16 @@ func _enter_tree():
 	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, button_instance)
 	button_instance.preview_toggled.connect(preview_pressed)
 	button_instance.aspect_selected.connect(aspect_mode_pressed)
+	button_instance.mask_button_pressed.connect(toggle_editor_cull_mask_layer)
 	
 	editor_selection.selection_changed.connect(on_selection_changed)
+	
 
 func _exit_tree():
 	main_screen_changed.disconnect(on_main_screen_changed)
 	button_instance.preview_toggled.disconnect(preview_pressed)
 	preview_free()
+	reset_editor_cull_mask()
 	if cam_preview_instance:
 		cam_preview_instance.queue_free()
 	if button_instance:
@@ -103,3 +107,11 @@ func aspect_mode_pressed(aspect_mode : int):
 
 func on_preview_window_closed():
 	button_instance.toggle_visibility()
+
+func toggle_editor_cull_mask_layer(layer_number : int):
+	var current_state := editor_camera.get_cull_mask_value(layer_number)
+	editor_camera.set_cull_mask_value(layer_number, !current_state)
+
+func reset_editor_cull_mask():
+	for i in 20:
+		editor_camera.set_cull_mask_value(i + 1, true)
