@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://dm3gn2q73tfoj"]
+
+[ext_resource type="Script" path="res://addons/custom-camera-preview/cam_window.gd" id="1_c8qc5"]
+
+[node name="CamWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_c8qc5")
+
+[node name="Window" type="Window" parent="."]
+positional_shadow_atlas_size = 512
+positional_shadow_atlas_quad_2 = 2
+positional_shadow_atlas_quad_3 = 2
+title = "Camera Preview"
+initial_position = 4
+size = Vector2i(307, 230)
+always_on_top = true
+min_size = Vector2i(307, 230)
+max_size = Vector2i(4000, 4000)
+
+[node name="Label" type="Label" parent="Window"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "NO ACTIVE CAM"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="close_requested" from="Window" to="." method="_on_window_close_requested"]

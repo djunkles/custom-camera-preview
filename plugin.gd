@@ -1,8 +1,9 @@
 @tool
 extends EditorPlugin
 
-const CamPreview = preload("./cam_preview.tscn")
+const CamPreview = preload("./cam_window.tscn")
 const PreviewButton = preload("./preview_button.tscn")
+
 var cam_preview_instance
 var button_instance
 
@@ -15,6 +16,7 @@ var editor_selection = EditorInterface.get_selection()
 func _enter_tree():
 	main_screen_changed.connect(on_main_screen_changed)
 	cam_preview_instance = CamPreview.instantiate()
+	cam_preview_instance.window_closed.connect(on_preview_window_closed)
 	EditorInterface.get_editor_main_screen().add_child(cam_preview_instance)
 	cam_preview_instance.toggle_window(false)
 	
@@ -37,7 +39,6 @@ func _exit_tree():
 func find_a_camera(root) -> Camera3D:
 	if root is Camera3D:
 		return root
-
 	return null 
 
 func cam_deleted():
@@ -66,8 +67,9 @@ func on_selection_changed():
 			preview_free()
 			pcam = cam.duplicate()
 			rt = RemoteTransform3D.new()
-			cam_preview_instance.get_vp().add_child(pcam)
+			cam_preview_instance.window.add_child(pcam)
 			cam_preview_instance.toggle_vp(true)
+			cam_preview_instance.set_window_title(cam.name)
 			cam.add_child(rt)
 			cam.tree_exiting.connect(cam_deleted)
 			rt.remote_path = pcam.get_path()
@@ -75,14 +77,14 @@ func on_selection_changed():
 
 
 func show_all():
-	if cam_preview_instance:
-		cam_preview_instance.show()
+	if cam_preview_instance and button_instance.pop_visible == true:
+		cam_preview_instance.window.show()
 	if button_instance:
 		button_instance.show()
 
 func hide_all():
 	if cam_preview_instance:
-		cam_preview_instance.hide()
+		cam_preview_instance.window.hide()
 	if button_instance:
 		button_instance.hide()
 
@@ -97,4 +99,7 @@ func preview_pressed(toggle):
 	cam_preview_instance.toggle_window(toggle)
 
 func aspect_mode_pressed(aspect_mode : int):
-	cam_preview_instance.window.set_aspect_mode(aspect_mode)
+	cam_preview_instance.set_aspect_mode(aspect_mode)
+
+func on_preview_window_closed():
+	button_instance.toggle_visibility()
