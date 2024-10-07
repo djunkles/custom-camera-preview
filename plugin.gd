@@ -62,8 +62,8 @@ func on_selection_changed():
 	var selected = editor_selection.get_selected_nodes()
 	if not selected.is_empty():
 		var cam = find_a_camera(selected[0])
-		if cam:
-			if cam_selected:
+		if cam != null:
+			if is_instance_valid(cam_selected):
 				if cam_selected.is_connected("tree_exiting", cam_deleted):
 					cam_selected.tree_exiting.disconnect(cam_deleted)
 			cam_selected = cam
