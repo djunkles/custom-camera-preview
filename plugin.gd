@@ -25,7 +25,7 @@ func _enter_tree():
 	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, button_instance)
 	button_instance.preview_toggled.connect(preview_pressed)
 	button_instance.aspect_selected.connect(aspect_mode_pressed)
-	button_instance.mask_button_pressed.connect(toggle_editor_cull_mask_layer)
+	button_instance.set_layers_bitmask.connect(toggle_editor_cull_mask_layer)
 	
 	editor_selection.selection_changed.connect(on_selection_changed)
 	
@@ -108,9 +108,10 @@ func aspect_mode_pressed(aspect_mode : int):
 func on_preview_window_closed():
 	button_instance.toggle_visibility()
 
-func toggle_editor_cull_mask_layer(layer_number : int):
-	var current_state := editor_camera.get_cull_mask_value(layer_number)
-	editor_camera.set_cull_mask_value(layer_number, !current_state)
+func toggle_editor_cull_mask_layer(bitmask : int):
+	#var current_state := editor_camera.get_cull_mask_value(layer_number)
+	#editor_camera.set_cull_mask_value(layer_number, !current_state)
+	editor_camera.cull_mask = bitmask
 
 func reset_editor_cull_mask():
 	for i in 20:

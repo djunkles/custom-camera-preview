@@ -3,7 +3,8 @@ extends MenuButton
 
 signal preview_toggled
 signal aspect_selected
-signal mask_button_pressed
+#signal mask_button_pressed
+signal set_layers_bitmask(bitmask)
 
 var aspect_mode: int = 0
 
@@ -31,10 +32,11 @@ func _enter_tree():
 
 func _ready() -> void:
 	# connect button signals
-	for child in button_grp_a.get_children():
+	for child in button_grp_a.get_children() + button_grp_b.get_children():
 		child.toggled.connect(_on_button_toggled.bind(child))
-	for child in button_grp_b.get_children():
-		child.toggled.connect(_on_button_toggled.bind(child))
+	await get_tree().root.ready
+	# apply saved visibility layers to editor cam
+	_load_layer_settings()
 
 func _exit_tree():
 	pop.id_pressed.disconnect(item_pressed)
@@ -69,6 +71,48 @@ func _on_button_toggled(toggled_on : bool, button : Button):
 		print("Layer " + button.text + " ON")
 	if not toggled_on:
 		print("Layer " + button.text + " OFF")
-	var layer_number = button.text.to_int()
-	mask_button_pressed.emit(layer_number)
+	set_layers_bitmask.emit(_get_layers_bitmask())
+	_save_layer_settings()
 	
+func _get_layers_bitmask() -> int:
+	var active_layers: Array[int] = []
+	# get toggle state of each layer button
+	# math their values to make bitmask
+	for child: Button in button_grp_a.get_children() + button_grp_b.get_children():
+		if child.button_pressed:
+			active_layers.append(child.text.to_int())
+	var bitmask := 0
+	for layer_no: int in active_layers:
+		var bit := layer_no - 1
+		bitmask += pow(2, bit)
+	# godot needs hidden layers 21-32 enabled for the editor
+	# add that magic number to bitmask
+	bitmask += 4293918720
+	return bitmask
+
+func _load_layer_settings():
+	# check for config file
+	var config = ConfigFile.new()
+	# if it doesn't exist create one
+	var err = config.load("user://camera_preview.cfg")
+	if err != OK:
+		_save_layer_settings()
+		config.load("user://camera_preview.cfg")
+	# load and set var from file
+	var saved_layer_state = config.get_value("visiblity_layers", "layer_state")
+	var layer_buttons: Array[Node] = button_grp_a.get_children() + button_grp_b.get_children()
+	for i in 20:
+		layer_buttons[i].set_pressed_no_signal(saved_layer_state[i])
+	
+	set_layers_bitmask.emit(_get_layers_bitmask())
+
+func _save_layer_settings():
+	var config = ConfigFile.new()
+	# set values from current variables
+	var layer_state : Array[bool] = []
+	layer_state.resize(20)
+	for child: Button in button_grp_a.get_children() + button_grp_b.get_children():
+		layer_state[child.text.to_int() - 1] = child.button_pressed
+	# save file
+	config.set_value("visiblity_layers", "layer_state", layer_state)
+	config.save("user://camera_preview.cfg")
