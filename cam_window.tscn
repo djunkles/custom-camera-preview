@@ -1,6 +1,61 @@
-[gd_scene load_steps=2 format=3 uid="uid://dm3gn2q73tfoj"]
+[gd_scene load_steps=8 format=3 uid="uid://dm3gn2q73tfoj"]
 
 [ext_resource type="Script" path="res://addons/custom-camera-preview/cam_window.gd" id="1_c8qc5"]
+[ext_resource type="Texture2D" uid="uid://xrtb1b61xk1c" path="res://addons/custom-camera-preview/sync_icon.svg" id="2_pdqbl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ncwce"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bujmw"]
+bg_color = Color(0, 0, 0, 0.54902)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0, 0, 0, 0.105882)
+shadow_size = 2
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpjgc"]
+bg_color = Color(0, 0, 0, 0.180392)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0, 0, 0, 0.105882)
+shadow_size = 2
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d3qua"]
+bg_color = Color(1, 1, 1, 0.482353)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0, 0, 0, 0.105882)
+shadow_size = 2
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="Theme" id="Theme_pb44r"]
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/styles/focus = SubResource("StyleBoxEmpty_ncwce")
+Button/styles/hover = SubResource("StyleBoxFlat_bujmw")
+Button/styles/normal = SubResource("StyleBoxFlat_fpjgc")
+Button/styles/pressed = SubResource("StyleBoxFlat_d3qua")
 
 [node name="CamWindow" type="Control"]
 layout_mode = 3
@@ -22,14 +77,38 @@ always_on_top = true
 min_size = Vector2i(307, 230)
 max_size = Vector2i(4000, 4000)
 
-[node name="Label" type="Label" parent="Window"]
+[node name="MarginContainer" type="MarginContainer" parent="Window"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="SyncButton" type="Button" parent="Window/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(1, 1, 1, 0.454902)
+show_behind_parent = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "Sync Camera"
+theme = SubResource("Theme_pb44r")
+icon = ExtResource("2_pdqbl")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="Window/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 text = "NO ACTIVE CAM"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [connection signal="close_requested" from="Window" to="." method="_on_window_close_requested"]
+[connection signal="pressed" from="Window/MarginContainer/SyncButton" to="." method="_on_sync_button_pressed"]

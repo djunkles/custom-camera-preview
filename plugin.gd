@@ -18,6 +18,7 @@ func _enter_tree():
 	main_screen_changed.connect(on_main_screen_changed)
 	cam_preview_instance = CamPreview.instantiate()
 	cam_preview_instance.window_closed.connect(on_preview_window_closed)
+	cam_preview_instance.sync_pressed.connect(on_selection_changed)
 	EditorInterface.get_editor_main_screen().add_child(cam_preview_instance)
 	cam_preview_instance.toggle_window(false)
 	
@@ -109,8 +110,6 @@ func on_preview_window_closed():
 	button_instance.toggle_visibility()
 
 func toggle_editor_cull_mask_layer(bitmask : int):
-	#var current_state := editor_camera.get_cull_mask_value(layer_number)
-	#editor_camera.set_cull_mask_value(layer_number, !current_state)
 	editor_camera.cull_mask = bitmask
 
 func reset_editor_cull_mask():
