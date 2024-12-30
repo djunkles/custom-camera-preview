@@ -72,7 +72,7 @@ positional_shadow_atlas_quad_2 = 2
 positional_shadow_atlas_quad_3 = 2
 title = "Camera Preview"
 initial_position = 4
-size = Vector2i(307, 230)
+size = Vector2i(461, 345)
 always_on_top = true
 min_size = Vector2i(307, 230)
 max_size = Vector2i(4000, 4000)
@@ -99,9 +99,9 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 tooltip_text = "Sync Camera"
 theme = SubResource("Theme_pb44r")
+theme_override_constants/icon_max_width = 400
 icon = ExtResource("2_pdqbl")
 icon_alignment = 1
-expand_icon = true
 
 [node name="Label" type="Label" parent="Window/MarginContainer"]
 unique_name_in_owner = true

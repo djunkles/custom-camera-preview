@@ -73,6 +73,7 @@ func on_selection_changed():
 			pcam = cam.duplicate()
 			rt = RemoteTransform3D.new()
 			cam_preview_instance.window.add_child(pcam)
+			pcam.make_current()
 			cam_preview_instance.toggle_vp(true)
 			cam_preview_instance.set_window_title(cam.name)
 			cam.add_child(rt)

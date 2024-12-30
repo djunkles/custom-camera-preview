@@ -13,6 +13,17 @@ var aspect_multiplier : float
 @onready var sync_button: Button = %SyncButton
 
 
+func _ready() -> void:
+	# set window size appropriate to screen size
+	var window_size: Vector2 = window.size
+	var screen_size := get_viewport_rect().size
+	if screen_size.y > 1400.0:
+		window_size *= 2.0
+		sync_button.size *= 2.0
+	window.size = window_size
+
+
+
 func _process(delta: float) -> void:
 	if locked_aspect:
 		window.size.x = window.size.y * aspect_multiplier
